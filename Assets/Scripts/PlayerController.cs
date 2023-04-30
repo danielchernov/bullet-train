@@ -12,13 +12,19 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D playerBody;
 
-    public bool isInputLocked = false;
+    //public bool isInputLocked = false;
 
     [SerializeField]
     private SquareManager _squareManager;
 
-    private int currentSquareAmount = 0;
-    private int lastSquareAmount = 0;
+    private float currentSquareAmount = 0;
+    private float lastSquareAmount = 0;
+
+    [SerializeField]
+    private AudioSource _walkingAudio;
+
+    [SerializeField]
+    private AudioClip[] _walkingSFX;
 
     void Start()
     {
@@ -27,11 +33,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!isInputLocked)
-        {
-            moveInput = Input.GetAxis("Vertical");
+        //if (!isInputLocked)
+        //{
+        moveInput = Input.GetAxis("Vertical");
 
-            turnInput = Input.GetAxis("Horizontal");
+        turnInput = Input.GetAxis("Horizontal");
+        //}
+
+        if (moveInput > 0 && !_walkingAudio.isPlaying)
+        {
+            _walkingAudio.PlayOneShot(_walkingSFX[Random.Range(0, _walkingSFX.Length)], 0.5f);
+        }
+        else if (moveInput == 0 && _walkingAudio.isPlaying)
+        {
+            _walkingAudio.Stop();
         }
 
         currentSquareAmount = _squareManager.AmountOfSquares;
@@ -42,8 +57,8 @@ public class PlayerController : MonoBehaviour
 
             if (_squareManager.AmountOfSquares < 20)
             {
-                moveSpeed *= 1.01f;
-                turnSpeed *= 1.01f;
+                moveSpeed *= 1.02f;
+                turnSpeed *= 1.02f;
             }
             else
             {

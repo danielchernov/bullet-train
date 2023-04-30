@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class UI_Manager : MonoBehaviour
 
     [SerializeField]
     GameObject pauseMenu;
+
+    [SerializeField]
+    TextMeshProUGUI cratesText;
 
     [SerializeField]
     AudioSource[] backgroundAudio;
@@ -67,5 +71,10 @@ public class UI_Manager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
+    }
+
+    public void CrateAmount(float amountOfCrates)
+    {
+        cratesText.text = amountOfCrates.ToString();
     }
 }

@@ -213,7 +213,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: f2a07dfb289b2f34986602bc45202379, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -235,7 +235,8 @@ GameObject:
   - component: {fileID: 7422004740058187600}
   - component: {fileID: 7422004740058187601}
   - component: {fileID: 7422004740058187438}
-  m_Layer: 0
+  - component: {fileID: 2106247409}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -318,6 +319,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3200
-  turnSpeed: 320
-  isInputLocked: 0
+  turnSpeed: 240
   _squareManager: {fileID: 0}
+  _walkingAudio: {fileID: 0}
+  _walkingSFX:
+  - {fileID: 8300000, guid: 89175a10eaac31a4a82c09b0ed40deb0, type: 3}
+  - {fileID: 8300000, guid: 1bc40390223ff6f40a3961915013cb3a, type: 3}
+  - {fileID: 8300000, guid: 96fc828ee9965cb498bba54a6e43c889, type: 3}
+--- !u!114 &2106247409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7422004740058187605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d84c9100a7b2244da83ef3940a7c82c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashStartPosition: {x: 0, y: 0, z: 0}
+  startDashTime: 0.25
+  dashCooldown: 1
+  dashSpeed: 15000
+  _sfxAudio: {fileID: 0}
+  _dashClip: {fileID: 8300000, guid: 8fce118bcd1e7034cbf1ef6795000a3d, type: 3}

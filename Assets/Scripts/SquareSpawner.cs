@@ -8,26 +8,64 @@ public class SquareSpawner : MonoBehaviour
     private GameObject squareToSpawn;
 
     [SerializeField]
-    private int amountToSpawn = 200;
+    private GameObject _player;
+
+    [SerializeField]
+    private SquareManager _squareManager;
+
+    [SerializeField]
+    private int minAmountToSpawn = 2;
+
+    [SerializeField]
+    private int maxAmountToSpawn = 5;
+
+    [SerializeField]
+    private float minWaitTime = 2f;
+
+    [SerializeField]
+    private float maxWaitTime = 4f;
+
+    [SerializeField]
+    private float spawnRange = 30f;
 
     void Start()
+    {
+        StartCoroutine(SpawningRoutine());
+    }
+
+    void SpawnSquares(int amountToSpawn)
     {
         for (int i = 0; i < amountToSpawn; i++)
         {
             Vector3 randomSpawnPos = new Vector3(
-                Random.Range(-30f, 30f),
-                Random.Range(-30f, 30f),
-                0
+                _player.transform.position.x + Random.Range(-spawnRange, spawnRange),
+                _player.transform.position.y + Random.Range(-spawnRange, spawnRange),
+                _player.transform.position.z
             );
 
             Quaternion randomRotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
 
-            GameObject spawnedSquare = Instantiate(squareToSpawn, randomSpawnPos, randomRotation);
+            GameObject spawnedSquare = Instantiate(
+                squareToSpawn,
+                randomSpawnPos,
+                randomRotation,
+                transform
+            );
 
             spawnedSquare.transform.GetChild(0).GetChild(1).GetComponent<SpriteRenderer>().color =
                 new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1);
 
-            //spawnedSquare.transform.localScale *= Random.Range(0.5f, 2f);
+            float cratesMultiplier = 1 + (_squareManager.AmountOfSquares / 40f);
+            spawnedSquare.transform.localScale *= Random.Range(0.6f, 2.6f * cratesMultiplier);
+        }
+    }
+
+    IEnumerator SpawningRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
+            SpawnSquares(Random.Range(minAmountToSpawn, maxAmountToSpawn));
         }
     }
 }

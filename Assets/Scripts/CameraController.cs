@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
         playerPosition = PlayerBody.transform.position;
         playerDirection = PlayerBody.transform.right;
 
-        ChangeCamSize(_squareContainer.childCount + 1);
+        //ChangeCamSize(_squareContainer.childCount + 1);
 
         cameraPosition = new Vector3(playerPosition.x, playerPosition.y, -10);
 
