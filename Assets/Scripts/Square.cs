@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloorSquare : MonoBehaviour
+public class Square : MonoBehaviour
 {
     private SquareManager _squareManager;
 
@@ -28,7 +28,7 @@ public class FloorSquare : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         squareAnimator.ResetTrigger("isShrinking");
         playerAnimator.ResetTrigger("isEating");
-        //Debug.Log("here!");
+
         StartCoroutine(_squareManager.AddSquare(gameObject));
         this.enabled = false;
     }
