@@ -13,13 +13,22 @@ public class DashController : MonoBehaviour
     private Collider2D playerCollider;
     private Rigidbody2D playerRb;
 
-    //private Animator playerAnimator;
+    private Animator _playerAnimator;
 
     private bool isDashing = false;
 
     public float startDashTime = 0;
     public float dashCooldown = 0;
     public float dashSpeed = 0;
+
+    [SerializeField]
+    float currentStartDashTime;
+
+    [SerializeField]
+    float currentDashCooldown;
+
+    [SerializeField]
+    float currentDashSpeed;
 
     private Vector3 dashMovement;
 
@@ -29,6 +38,9 @@ public class DashController : MonoBehaviour
     [SerializeField]
     private AudioClip _dashClip;
 
+    [SerializeField]
+    private SquareManager _squareManager;
+
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
@@ -36,7 +48,7 @@ public class DashController : MonoBehaviour
         dashTime = startDashTime;
         dashCooldownTime = dashCooldown;
 
-        //playerAnimator = GetComponent<Animator>();
+        _playerAnimator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -47,13 +59,19 @@ public class DashController : MonoBehaviour
             {
                 if (Input.GetButton("Jump"))
                 {
+                    currentStartDashTime =
+                        startDashTime * (1 + (_squareManager.AmountOfSquares / 40));
+                    currentDashCooldown =
+                        dashCooldown / (1 + (_squareManager.AmountOfSquares / 40));
+                    currentDashSpeed = dashSpeed * (1 + (_squareManager.AmountOfSquares / 40));
+
                     dashStartPosition = transform.position;
                     isDashing = true;
-                    //playerAnimator.SetBool("isDashing", true);
+                    _playerAnimator.SetTrigger("isDashing");
 
-                    dashCooldownTime = dashCooldown;
+                    dashCooldownTime = currentDashCooldown;
 
-                    _sfxAudio.PlayOneShot(_dashClip, 1f);
+                    _sfxAudio.PlayOneShot(_dashClip, 1.2f);
                 }
             }
             else
@@ -67,9 +85,9 @@ public class DashController : MonoBehaviour
             {
                 isDashing = false;
 
-                //playerAnimator.SetBool("isDashing", false);
+                _playerAnimator.ResetTrigger("isDashing");
 
-                dashTime = startDashTime;
+                dashTime = currentStartDashTime;
             }
             else
             {
@@ -77,7 +95,10 @@ public class DashController : MonoBehaviour
 
                 dashMovement = transform.right;
 
-                playerRb.AddForce(dashMovement * dashSpeed * Time.deltaTime, ForceMode2D.Impulse);
+                playerRb.AddForce(
+                    dashMovement * currentDashSpeed * Time.deltaTime,
+                    ForceMode2D.Impulse
+                );
             }
         }
     }

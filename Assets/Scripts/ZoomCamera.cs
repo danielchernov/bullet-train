@@ -19,6 +19,9 @@ public class ZoomCamera : MonoBehaviour
     [SerializeField]
     private SquareManager _squareManager;
 
+    [SerializeField]
+    private Transform _zoomBar;
+
     void Start()
     {
         camSize = Camera.main.orthographicSize;
@@ -26,7 +29,7 @@ public class ZoomCamera : MonoBehaviour
 
     void Update()
     {
-        mouseInput = Input.GetAxis("Mouse ScrollWheel");
+        mouseInput = Input.GetAxis("Zoom");
         if (mouseInput != 0)
         {
             CamZoom();
@@ -35,11 +38,19 @@ public class ZoomCamera : MonoBehaviour
 
     public void CamZoom()
     {
-        maxClamp = 10 + (_squareManager.AmountOfSquares / 2);
+        maxClamp = 14 + (_squareManager.AmountOfSquares / 1.5f);
         camSize = Camera.main.orthographicSize;
 
         camSize -= mouseInput * zoomSensitivity;
         camSize = Mathf.Clamp(camSize, minClamp, maxClamp);
         Camera.main.orthographicSize = camSize;
+
+        ChangeZoomBar();
+    }
+
+    public void ChangeZoomBar()
+    {
+        Vector3 barSize = new Vector3(Mathf.InverseLerp(maxClamp, minClamp, camSize), 10, 1);
+        _zoomBar.localScale = barSize;
     }
 }

@@ -8,12 +8,14 @@ public class DeliveryPlatform : MonoBehaviour
     private SquareManager _squareManager;
     private Coroutine SquareReceiving;
 
+    [SerializeField]
+    private SpriteRenderer _platformRenderer;
+
     void Start()
     {
-        _squareManager = GameObject.Find("SquareContainer").GetComponent<SquareManager>();
+        _squareManager = GameObject.Find("SquareManager").GetComponent<SquareManager>();
+        //_platformRenderer = GetComponent<SpriteRenderer>();
     }
-
-    void Update() { }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
@@ -21,11 +23,17 @@ public class DeliveryPlatform : MonoBehaviour
         {
             _playerOnTop = true;
             SquareReceiving = StartCoroutine(ReceiveSquares());
+
+            _platformRenderer.color *= 2f;
         }
 
+        if (collider.tag == "BadSquare")
+        {
+            Destroy(collider.gameObject);
+        }
         if (collider.tag == "Platform")
         {
-            Destroy(gameObject);
+            Destroy(collider.gameObject);
         }
     }
 
@@ -33,8 +41,10 @@ public class DeliveryPlatform : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            StopCoroutine(SquareReceiving);
             _playerOnTop = false;
+            StopCoroutine(SquareReceiving);
+
+            _platformRenderer.color /= 2f;
         }
     }
 
@@ -42,7 +52,12 @@ public class DeliveryPlatform : MonoBehaviour
     {
         while (_playerOnTop)
         {
-            StartCoroutine(_squareManager.RemoveSquare());
+            if (_squareManager.AmountOfSquares > 0)
+            {
+                StartCoroutine(_squareManager.RemoveSquare());
+
+                transform.localScale *= 1.01f;
+            }
 
             yield return new WaitForSeconds(0.25f);
         }

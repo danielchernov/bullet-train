@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8883870057227126483}
   - component: {fileID: 8636815279029905268}
   - component: {fileID: 6758909318742142243}
+  - component: {fileID: 2204496856071631984}
   m_Layer: 0
   m_Name: DeliveryPlatform
   m_TagString: Platform
@@ -161,7 +162,7 @@ LineRenderer:
   - {x: 0.5, y: -0.5, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.2
+    widthMultiplier: 0.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -226,7 +227,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f524a08343210694bbd09e9133619af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _receiveClip:
-  - {fileID: 8300000, guid: 57de1111c38f0b6418aeb999b746b9cd, type: 3}
-  - {fileID: 8300000, guid: c6d2b3c19d0aabf4ab34c3a812bedfac, type: 3}
-  - {fileID: 8300000, guid: 5bead3162ce976f4ba3a81ccd594020b, type: 3}
+--- !u!50 &2204496856071631984
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7823567115321545770}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

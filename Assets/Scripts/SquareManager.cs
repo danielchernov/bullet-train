@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SquareManager : MonoBehaviour
 {
     public float AmountOfSquares = 0;
+    public float ScoreTotal = 0;
+    public float BestScore = 0;
 
     [SerializeField]
     private PlayerController _player;
@@ -23,11 +26,29 @@ public class SquareManager : MonoBehaviour
     [SerializeField]
     private AudioClip[] _receiveClip;
 
+    [SerializeField]
+    private ZoomCamera _zoomCamera;
+
+    [SerializeField]
+    private GameObject _scoreTextVFX;
+
+    void Awake()
+    {
+        //PlayerPrefs.SetFloat("BestScore", 0);
+        BestScore = PlayerPrefs.GetFloat("BestScore", 0);
+    }
+
+    void Start()
+    {
+        _pauseMenu.WriteBestScore(BestScore);
+    }
+
     public IEnumerator AddSquare(GameObject square)
     {
         AmountOfSquares++;
 
         _pauseMenu.CrateAmount(AmountOfSquares);
+        _zoomCamera.CamZoom();
 
         Animator squareAnimator = square.GetComponentInChildren<Animator>();
         Quaternion oldSquareRotation = square.transform.rotation;
@@ -57,7 +78,11 @@ public class SquareManager : MonoBehaviour
         _connectedRb = lastSquare.GetComponent<Rigidbody2D>();
 
         squareHingeJoint.autoConfigureConnectedAnchor = false;
-        squareHingeJoint.connectedBody = _connectedRb;
+
+        if (_connectedRb != square.GetComponent<Rigidbody2D>())
+        {
+            squareHingeJoint.connectedBody = _connectedRb;
+        }
 
         if (AmountOfSquares == 1)
         {
@@ -101,10 +126,26 @@ public class SquareManager : MonoBehaviour
 
     public IEnumerator RemoveSquare()
     {
-        if (transform.childCount > 0)
+        if (transform.childCount > 0 && AmountOfSquares > 0)
         {
+            GameObject score = Instantiate(
+                _scoreTextVFX,
+                _player.transform.position,
+                Quaternion.identity
+            );
+
+            Destroy(score, 3f);
+
+            score.GetComponentInChildren<TextMeshProUGUI>().text = "+ " + AmountOfSquares;
+
             AmountOfSquares--;
+            ScoreTotal += transform.childCount;
+
+            _player.transform.localScale /= 1.01f;
+
             _pauseMenu.CrateAmount(AmountOfSquares);
+            _pauseMenu.WriteScore(ScoreTotal);
+            _zoomCamera.CamZoom();
 
             GameObject square = transform.GetChild(transform.childCount - 1).gameObject;
 
@@ -112,9 +153,9 @@ public class SquareManager : MonoBehaviour
 
             squareAnimator.SetTrigger("isShrinking");
 
-            _sfxAudio.PlayOneShot(_receiveClip[Random.Range(0, _receiveClip.Length)], 1f);
+            _sfxAudio.PlayOneShot(_receiveClip[Random.Range(0, _receiveClip.Length)], 0.5f);
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
             Destroy(square);
         }

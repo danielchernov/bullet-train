@@ -234,11 +234,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grabClip:
-  - {fileID: 8300000, guid: 8f9199e29500a454caae3286cfc69062, type: 3}
-  - {fileID: 8300000, guid: 314542cf74cfca448b298d3ce62f4673, type: 3}
-  - {fileID: 8300000, guid: 1f6133d4b21d93a4595691dc98365d2d, type: 3}
-  - {fileID: 8300000, guid: 9114ce3bd7aa63041bb26b267d813342, type: 3}
-  - {fileID: 8300000, guid: c46c228ecfd66b24fb01ebf5e0b0e82e, type: 3}
+  - {fileID: 8300000, guid: 39c1cd6378572fc4f8864cd4df4496a8, type: 3}
+  - {fileID: 8300000, guid: 816e2050f13796a4dbd1e37bf7acbbad, type: 3}
+  - {fileID: 8300000, guid: 4794e998574bf9d4bb805149787f354b, type: 3}
 --- !u!1 &8852387322046865303
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,9 +13,6 @@ public class CameraController : MonoBehaviour
     Vector3 velocity = Vector3.zero;
     float camSize = 0;
 
-    [SerializeField]
-    private Transform _squareContainer;
-
     void Start()
     {
         PlayerRb = PlayerBody.GetComponent<Rigidbody2D>();
@@ -26,8 +23,6 @@ public class CameraController : MonoBehaviour
     {
         playerPosition = PlayerBody.transform.position;
         playerDirection = PlayerBody.transform.right;
-
-        //ChangeCamSize(_squareContainer.childCount + 1);
 
         cameraPosition = new Vector3(playerPosition.x, playerPosition.y, -10);
 

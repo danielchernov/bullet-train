@@ -45,4 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _UIManager: {fileID: 0}
-  pauseMenu: {fileID: 0}
+  _pauseMenu: {fileID: 0}
+  _player: {fileID: 0}
+  _sfxAudio: {fileID: 0}
+  _menuClickClip: {fileID: 8300000, guid: c4e33b23e2a9df14c855ddd328ea1d0d, type: 3}

@@ -14,10 +14,10 @@ public class SquareSpawner : MonoBehaviour
     private SquareManager _squareManager;
 
     [SerializeField]
-    private int minAmountToSpawn = 2;
+    private int minSquareAmountToSpawn = 2;
 
     [SerializeField]
-    private int maxAmountToSpawn = 5;
+    private int maxSquareAmountToSpawn = 5;
 
     [SerializeField]
     private float minWaitTime = 2f;
@@ -56,7 +56,10 @@ public class SquareSpawner : MonoBehaviour
                 new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1);
 
             float cratesMultiplier = 1 + (_squareManager.AmountOfSquares / 40f);
-            spawnedSquare.transform.localScale *= Random.Range(0.6f, 2.6f * cratesMultiplier);
+            spawnedSquare.transform.localScale *= Random.Range(
+                0.5f * cratesMultiplier,
+                2.5f * cratesMultiplier
+            );
         }
     }
 
@@ -65,7 +68,7 @@ public class SquareSpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
-            SpawnSquares(Random.Range(minAmountToSpawn, maxAmountToSpawn));
+            SpawnSquares(Random.Range(minSquareAmountToSpawn, maxSquareAmountToSpawn));
         }
     }
 }

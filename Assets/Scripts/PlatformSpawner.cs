@@ -23,36 +23,42 @@ public class PlatformSpawner : MonoBehaviour
             {
                 case 1:
                     randomPos = new Vector3(
-                        Random.Range(-400f, -_distanceFromCenter),
-                        Random.Range(-400f, 400f),
+                        Random.Range(-250f, -_distanceFromCenter),
+                        Random.Range(-250f, 250f),
                         0
                     );
                     break;
                 case 2:
                     randomPos = new Vector3(
-                        Random.Range(_distanceFromCenter, 400f),
-                        Random.Range(-400f, 400f),
+                        Random.Range(_distanceFromCenter, 250f),
+                        Random.Range(-250f, 250f),
                         0
                     );
                     break;
                 case 3:
                     randomPos = new Vector3(
-                        Random.Range(-400f, 400f),
-                        Random.Range(-400f, -_distanceFromCenter),
+                        Random.Range(-250f, 250f),
+                        Random.Range(-250f, -_distanceFromCenter),
                         0
                     );
                     break;
                 case 4:
                     randomPos = new Vector3(
-                        Random.Range(-400f, 400f),
-                        Random.Range(_distanceFromCenter, 400f),
+                        Random.Range(-250f, 250f),
+                        Random.Range(_distanceFromCenter, 250f),
                         0
                     );
                     break;
                 default:
                     break;
             }
-            GameObject platform = Instantiate(_platform, randomPos, Quaternion.identity, transform);
+
+            GameObject platform = Instantiate(
+                _platform,
+                randomPos,
+                Quaternion.Euler(0, 0, 45),
+                transform
+            );
 
             SpriteRenderer platformSprite = platform.GetComponent<SpriteRenderer>();
             platformSprite.color = new Color(
@@ -62,11 +68,8 @@ public class PlatformSpawner : MonoBehaviour
                 1
             );
 
-            platform.transform.localScale = new Vector3(
-                Random.Range(5f, 30f),
-                Random.Range(5f, 30f),
-                1
-            );
+            int randomSpawn = Random.Range(10, 20);
+            platform.transform.localScale = new Vector3(randomSpawn, randomSpawn, 1);
         }
     }
 }

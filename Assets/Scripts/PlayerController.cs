@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 100;
-    public float turnSpeed = 100;
+    public float intialMoveSpeed = 3200;
+    public float initialTurnSpeed = 200;
+
+    [SerializeField]
+    private float moveSpeed = 3200;
+
+    [SerializeField]
+    private float turnSpeed = 200;
 
     float moveInput;
     float turnInput;
 
-    Rigidbody2D playerBody;
+    Rigidbody2D _playerBody;
+    Animator _playerAnimator;
 
     //public bool isInputLocked = false;
 
@@ -26,9 +33,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private AudioClip[] _walkingSFX;
 
+    [SerializeField]
+    private GameObject _pauseMenu;
+
     void Start()
     {
-        playerBody = GetComponent<Rigidbody2D>();
+        _playerBody = GetComponent<Rigidbody2D>();
+        _playerAnimator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -39,10 +50,18 @@ public class PlayerController : MonoBehaviour
 
         turnInput = Input.GetAxis("Horizontal");
         //}
-
-        if (moveInput > 0 && !_walkingAudio.isPlaying)
+        if (moveInput > 0 && !_playerAnimator.GetBool("isWalking"))
         {
-            _walkingAudio.PlayOneShot(_walkingSFX[Random.Range(0, _walkingSFX.Length)], 0.5f);
+            _playerAnimator.SetBool("isWalking", true);
+        }
+        if (moveInput == 0 && _playerAnimator.GetBool("isWalking"))
+        {
+            _playerAnimator.SetBool("isWalking", false);
+        }
+
+        if (moveInput > 0 && !_walkingAudio.isPlaying && !_pauseMenu.activeSelf)
+        {
+            _walkingAudio.PlayOneShot(_walkingSFX[Random.Range(0, _walkingSFX.Length)], 0.4f);
         }
         else if (moveInput == 0 && _walkingAudio.isPlaying)
         {
@@ -51,19 +70,30 @@ public class PlayerController : MonoBehaviour
 
         currentSquareAmount = _squareManager.AmountOfSquares;
 
-        if (currentSquareAmount > lastSquareAmount)
+        if (currentSquareAmount != lastSquareAmount && moveInput > 0)
         {
             lastSquareAmount = currentSquareAmount;
 
-            if (_squareManager.AmountOfSquares < 20)
+            if (_squareManager.AmountOfSquares < 10)
             {
-                moveSpeed *= 1.02f;
-                turnSpeed *= 1.02f;
+                moveSpeed = intialMoveSpeed * Mathf.Pow(1.07f, _squareManager.AmountOfSquares);
+                ;
+                turnSpeed = initialTurnSpeed * Mathf.Pow(1.07f, _squareManager.AmountOfSquares);
+            }
+            else if (_squareManager.AmountOfSquares < 20)
+            {
+                moveSpeed = intialMoveSpeed * Mathf.Pow(1.05f, _squareManager.AmountOfSquares);
+                turnSpeed = initialTurnSpeed * Mathf.Pow(1.05f, _squareManager.AmountOfSquares);
+            }
+            else if (_squareManager.AmountOfSquares < 40)
+            {
+                moveSpeed = intialMoveSpeed * Mathf.Pow(1.04f, _squareManager.AmountOfSquares);
+                turnSpeed = initialTurnSpeed * Mathf.Pow(1.04f, _squareManager.AmountOfSquares);
             }
             else
             {
-                moveSpeed *= 1.01f;
-                turnSpeed *= 1.01f;
+                moveSpeed = intialMoveSpeed * Mathf.Pow(1.03f, _squareManager.AmountOfSquares);
+                turnSpeed = initialTurnSpeed * Mathf.Pow(1.03f, _squareManager.AmountOfSquares);
             }
         }
     }
@@ -72,7 +102,7 @@ public class PlayerController : MonoBehaviour
     {
         if (moveInput > 0)
         {
-            playerBody.AddForce(
+            _playerBody.AddForce(
                 transform.right * moveInput * moveSpeed * Time.deltaTime,
                 ForceMode2D.Impulse
             );
@@ -80,8 +110,7 @@ public class PlayerController : MonoBehaviour
 
         if (turnInput != 0)
         {
-            //transform.Rotate(Vector3.forward, -turnInput * turnSpeed * Time.deltaTime);
-            playerBody.AddTorque(-turnInput * turnSpeed * Time.deltaTime, ForceMode2D.Impulse);
+            _playerBody.AddTorque(-turnInput * turnSpeed * Time.deltaTime, ForceMode2D.Impulse);
         }
     }
 }

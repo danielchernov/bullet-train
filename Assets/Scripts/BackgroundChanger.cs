@@ -19,6 +19,8 @@ public class BackgroundChanger : MonoBehaviour
     {
         _backgroundColor1 = _BackgroundRenderer.color;
         _backgroundColor2 = _backgroundColor1;
+
+        currentTime = duration;
     }
 
     void Update()
@@ -35,7 +37,7 @@ public class BackgroundChanger : MonoBehaviour
                 Random.Range(0f, 1f),
                 Random.Range(0f, 1f),
                 Random.Range(0f, 1f),
-                0.1f
+                0.4f
             );
 
             currentTime = 0;
